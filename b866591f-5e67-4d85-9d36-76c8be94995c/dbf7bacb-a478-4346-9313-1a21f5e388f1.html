@@ -131,18 +131,15 @@
             const missedTable = document.getElementById("missed");
 
             rows.forEach(row => {
-                const [task, name, missedCount] = row.split(',');
+                const [name, missedCount] = row.split(',');
 
                 const tableRow = document.createElement("tr");
-                const taskCell = document.createElement("td");
                 const nameCell = document.createElement("td");
                 const missedCell = document.createElement("td");
 
-                taskCell.textContent = task;
                 nameCell.textContent = name;
                 missedCell.textContent = missedCount;
 
-                tableRow.appendChild(taskCell);
                 tableRow.appendChild(nameCell);
                 tableRow.appendChild(missedCell);
                 missedTable.appendChild(tableRow);
@@ -176,8 +173,7 @@
     <table>
         <thead>
             <tr>
-                <th>Taak</th>
-                <th>Naam</th>
+                <th>Wie</th>
                 <th>Aantal Gemist</th>
             </tr>
         </thead>
