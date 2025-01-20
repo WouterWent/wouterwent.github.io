@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotating Cleaning Schedule</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #444;
+        }
+        .task {
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        // Cleaning tasks and assignments
+        const tasks = ["Keuken", "Badkamer", "Woonkamer+Hal"];
+        const people = ["Wouter", "Moritz", "Sander"];
+
+        function getAssignments() {
+            const today = new Date();
+            const currentWeek = getWeekNumber(today);
+            const assignments = {};
+
+            // Rotate assignments based on the week number
+            tasks.forEach((task, index) => {
+                assignments[task] = people[(index + currentWeek) % people.length];
+            });
+
+            return assignments;
+        }
+
+        // Calculate the ISO week number
+        function getWeekNumber(date) {
+            const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+            const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+            return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+        }
+
+        // Render the schedule into the table
+        function renderSchedule() {
+            const scheduleTable = document.getElementById("schedule");
+            const assignments = getAssignments();
+
+            Object.keys(assignments).forEach(task => {
+                const row = document.createElement("tr");
+                const taskCell = document.createElement("td");
+                const personCell = document.createElement("td");
+
+                taskCell.textContent = task;
+                personCell.textContent = assignments[task];
+
+                row.appendChild(taskCell);
+                row.appendChild(personCell);
+                scheduleTable.appendChild(row);
+            });
+        }
+
+        // Initialize the schedule on page load
+        window.onload = renderSchedule;
+    </script>
+</head>
+<body>
+    <h1>Rotating Cleaning Schedule</h1>
+    <p>The cleaning tasks are rotated weekly between Wouter, Moritz, and Sander.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Assigned To</th>
+            </tr>
+        </thead>
+        <tbody id="schedule">
+            <!-- Schedule will be populated here -->
+        </tbody>
+    </table>
+</body>
+</html>
