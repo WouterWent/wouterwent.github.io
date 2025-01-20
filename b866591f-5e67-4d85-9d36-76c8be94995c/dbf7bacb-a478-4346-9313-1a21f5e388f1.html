@@ -53,6 +53,12 @@
         table tbody tr:last-child td {
             border-bottom: none;
         }
+        .missed-table-title {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-top: 40px;
+            color: #444;
+        }
     </style>
     <script>
         const tasks = ["Keuken", "Badkamer", "Woonkamer+Hal"];
@@ -107,9 +113,32 @@
             });
         }
 
+        async function renderMissedTasks() {
+            const response = await fetch('missed_tasks.csv');
+            const data = await response.text();
+            const rows = data.trim().split('\n').slice(1); // Skip the header row
+            const missedTable = document.getElementById("missed");
+
+            rows.forEach(row => {
+                const [name, missedCount] = row.split(',');
+
+                const tableRow = document.createElement("tr");
+                const nameCell = document.createElement("td");
+                const missedCell = document.createElement("td");
+
+                nameCell.textContent = name;
+                missedCell.textContent = missedCount;
+
+                tableRow.appendChild(nameCell);
+                tableRow.appendChild(missedCell);
+                missedTable.appendChild(tableRow);
+            });
+        }
+
         window.onload = function () {
             renderDateAndWeek();
             renderSchedule();
+            renderMissedTasks();
         };
     </script>
 </head>
@@ -127,6 +156,18 @@
         </thead>
         <tbody id="schedule">
             <!-- Schedule will be populated here -->
+        </tbody>
+    </table>
+    <h2 class="missed-table-title">Gemiste Taken</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Naam</th>
+                <th>Aantal Gemist</th>
+            </tr>
+        </thead>
+        <tbody id="missed">
+            <!-- Missed tasks will be populated here -->
         </tbody>
     </table>
 </body>
