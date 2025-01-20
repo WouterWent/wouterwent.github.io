@@ -15,12 +15,13 @@
             color: #4a90e2;
             font-size: 2rem;
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
-        p {
+        .date-info {
             text-align: center;
             font-size: 1rem;
             color: #666;
+            margin-bottom: 20px;
         }
         table {
             width: 80%;
@@ -75,6 +76,19 @@
             return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
         }
 
+        function formatDate(date) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('nl-NL', options);
+        }
+
+        function renderDateAndWeek() {
+            const today = new Date();
+            const currentWeek = getWeekNumber(today);
+            const dateInfo = document.getElementById("date-info");
+
+            dateInfo.textContent = `Vandaag is ${formatDate(today)} - Week ${currentWeek}`;
+        }
+
         function renderSchedule() {
             const scheduleTable = document.getElementById("schedule");
             const assignments = getAssignments();
@@ -93,12 +107,17 @@
             });
         }
 
-        window.onload = renderSchedule;
+        window.onload = function () {
+            renderDateAndWeek();
+            renderSchedule();
+        };
     </script>
 </head>
 <body>
     <h1>Schoonmaakschema Steijnlaan</h1>
-    <p>Houd het huis netjes met dit handige schoonmaakschema!</p>
+    <div id="date-info" class="date-info">
+        <!-- Current date and week number will be inserted here -->
+    </div>
     <table>
         <thead>
             <tr>
