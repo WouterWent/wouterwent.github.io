@@ -33,53 +33,53 @@
             font-weight: bold;
         }
     </style>
-    <script>
-        // Cleaning tasks and assignments
-        const tasks = ["Keuken", "Badkamer", "Woonkamer+Hal"];
-        const people = ["Wouter", "Moritz", "Sander"];
+<script>
+    // Cleaning tasks and assignments
+    const tasks = ["Keuken", "Badkamer", "Woonkamer+Hal"];
+    const people = ["Wouter", "Moritz", "Sander"];
 
-        function getAssignments() {
-            const today = new Date();
-            const currentWeek = getWeekNumber(today);
-            const assignments = {};
+    function getAssignments() {
+        const today = new Date();
+        const currentWeek = getWeekNumber(today);
+        const assignments = {};
 
-            // Rotate assignments based on the week number
-            tasks.forEach((task, index) => {
-                assignments[task] = people[(index + currentWeek) % people.length];
-            });
+        // Reverse rotate assignments based on the week number
+        tasks.forEach((task, index) => {
+            assignments[task] = people[(index - currentWeek + people.length) % people.length];
+        });
 
-            return assignments;
-        }
+        return assignments;
+    }
 
-        // Calculate the ISO week number
-        function getWeekNumber(date) {
-            const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
-            const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
-            return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
-        }
+    // Calculate the ISO week number
+    function getWeekNumber(date) {
+        const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+        const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+        return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+    }
 
-        // Render the schedule into the table
-        function renderSchedule() {
-            const scheduleTable = document.getElementById("schedule");
-            const assignments = getAssignments();
+    // Render the schedule into the table
+    function renderSchedule() {
+        const scheduleTable = document.getElementById("schedule");
+        const assignments = getAssignments();
 
-            Object.keys(assignments).forEach(task => {
-                const row = document.createElement("tr");
-                const taskCell = document.createElement("td");
-                const personCell = document.createElement("td");
+        Object.keys(assignments).forEach(task => {
+            const row = document.createElement("tr");
+            const taskCell = document.createElement("td");
+            const personCell = document.createElement("td");
 
-                taskCell.textContent = task;
-                personCell.textContent = assignments[task];
+            taskCell.textContent = task;
+            personCell.textContent = assignments[task];
 
-                row.appendChild(taskCell);
-                row.appendChild(personCell);
-                scheduleTable.appendChild(row);
-            });
-        }
+            row.appendChild(taskCell);
+            row.appendChild(personCell);
+            scheduleTable.appendChild(row);
+        });
+    }
 
-        // Initialize the schedule on page load
-        window.onload = renderSchedule;
-    </script>
+    // Initialize the schedule on page load
+    window.onload = renderSchedule;
+</script>
 </head>
 <body>
     <h1>Rotating Cleaning Schedule</h1>
